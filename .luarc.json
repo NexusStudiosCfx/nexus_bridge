@@ -1,0 +1,12 @@
+{
+  "runtime.version": "Lua 5.4",
+  "workspace.library": ["types"],
+  "workspace.ignoreDir": ["node_modules"],
+  "diagnostics.globals": [
+    "Bridge", "NexusBridge", "BridgeRegistry", "Config",
+    "exports", "source", "json", "promise", "Citizen", "MySQL",
+    "vector2", "vector3", "vector4", "vec3",
+    "GlobalState", "LocalPlayer", "Player", "Entity"
+  ],
+  "diagnostics.disable": ["undefined-global", "lowercase-global"]
+}

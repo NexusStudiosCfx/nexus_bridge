@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.png binary
+
+# Left out of the release zip: a server needs only the resource.
+/examples export-ignore
+/.luarc.json export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore

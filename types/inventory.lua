@@ -1,0 +1,46 @@
+---@meta
+
+---@class Bridge.Item
+---@field slot integer?
+---@field name string
+---@field label string
+---@field count integer
+---@field metadata table?
+---@field weight number?
+---@field image string?
+
+---A player id, or the id of a stash where the inventory has them.
+---@alias Bridge.Inv integer|string
+
+---Capabilities: metadata, slots, stashes, weight, images, usableItems.
+---@class Bridge.InventoryServer: Bridge.Module
+---@field items fun(inv: Bridge.Inv): Bridge.Item[]
+---@field slot fun(inv: Bridge.Inv, slot: integer): Bridge.Item?
+---@field count fun(inv: Bridge.Inv, name: string): integer
+---@field has fun(inv: Bridge.Inv, name: string, count?: integer): boolean
+---@field find fun(inv: Bridge.Inv, name: string, metadata?: table): Bridge.Item[]
+---@field canCarry fun(inv: Bridge.Inv, name: string, count?: integer, metadata?: table): boolean
+---@field add fun(inv: Bridge.Inv, name: string, count?: integer, metadata?: table): boolean
+---@field remove fun(inv: Bridge.Inv, name: string, count?: integer): boolean all or nothing
+---@field removeSlot fun(inv: Bridge.Inv, slot: integer, name: string, count?: integer): boolean
+---@field setMetadata fun(inv: Bridge.Inv, slot: integer, metadata: table): boolean
+---@field clear fun(inv: Bridge.Inv, keep?: string[]): boolean
+---@field label fun(name: string): string
+---@field exists fun(name: string): boolean
+---@field image fun(name: string, metadata?: table): string?
+---@field weight fun(name: string): number
+---@field missing fun(names: string[]): string[]
+---@field check fun(names: string[], hint?: string): boolean
+---@field registerUsable fun(name: string, callback: fun(src: integer, item: { name: string, slot: integer?, count: integer?, metadata: table? })): boolean
+---@field registerStash fun(id: string, options?: { label?: string, slots?: integer, weight?: integer }): boolean
+---@field openStash fun(src: integer, id: string, options?: { label?: string, slots?: integer, weight?: integer }): boolean
+---@field stashItems fun(id: string): Bridge.Item[]
+---@field clearStash fun(id: string): boolean
+
+---@class Bridge.InventoryClient: Bridge.Module
+---@field label fun(name: string): string
+---@field exists fun(name: string): boolean
+---@field image fun(name: string, metadata?: table): string?
+---@field items fun(): Bridge.Item[]
+---@field count fun(name: string): integer
+---@field has fun(name: string, count?: integer): boolean

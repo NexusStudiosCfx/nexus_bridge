@@ -1,0 +1,95 @@
+---@meta
+
+---@class Bridge.Identity
+---@field id string the character's id (citizenid, identifier)
+---@field name string
+---@field firstName string?
+---@field lastName string?
+
+---@class Bridge.Job
+---@field name string
+---@field label string
+---@field grade integer
+---@field gradeLabel string
+---@field boss boolean
+---@field onDuty boolean
+
+---@class Bridge.Gang
+---@field name string
+---@field label string
+---@field grade integer
+---@field gradeLabel string
+---@field boss boolean
+
+---@class Bridge.Grade
+---@field grade integer
+---@field name string
+---@field pay integer
+---@field boss boolean
+
+---@class Bridge.Employment
+---@field grade integer
+---@field boss boolean
+---@field onDuty boolean
+---@field primary boolean
+
+---@class Bridge.Employee
+---@field id string
+---@field name string?
+---@field grade integer
+---@field online boolean
+
+---@alias Bridge.GroupRule string|string[]|table<string, integer>
+---@alias Bridge.JobReason 'job_missing'|'grade_missing'|'no_character'|'in_use'|'last_grade'|'not_supported'|'refused'|'unavailable'
+
+---Capabilities: offlineMoney, multiJob, duty, gangs, metadata, usableItems, moneyEvents,
+---jobs, grades, gradeBoss, gradesPersist.
+---@class Bridge.FrameworkServer: Bridge.Module
+---@field getIdentifier fun(src: integer): string?
+---@field getIdentity fun(src: integer): Bridge.Identity?
+---@field getName fun(src: integer): string
+---@field getSource fun(id: string): integer?
+---@field getPlayers fun(): integer[]
+---@field isLoaded fun(src: integer): boolean
+---@field getCharacterName fun(id: string): string?
+---@field getMoney fun(src: integer, account: string): integer
+---@field addMoney fun(src: integer, account: string, amount: number, reason?: string): boolean
+---@field removeMoney fun(src: integer, account: string, amount: number, reason?: string): boolean
+---@field getMoneyById fun(id: string, account: string): integer?
+---@field addMoneyById fun(id: string, account: string, amount: number, reason?: string): boolean
+---@field removeMoneyById fun(id: string, account: string, amount: number, reason?: string): boolean
+---@field getJob fun(src: integer): Bridge.Job?
+---@field getGang fun(src: integer): Bridge.Gang?
+---@field getGroups fun(src: integer): table<string, integer>
+---@field hasGroup fun(src: integer, group: Bridge.GroupRule, minGrade?: integer): boolean
+---@field getEmployment fun(src: integer, job: string): Bridge.Employment?
+---@field getOnDuty fun(job: string): integer[]
+---@field jobExists fun(job: string, grade?: integer): boolean
+---@field getJobLabel fun(job: string): string?
+---@field listJobs fun(): { name: string, label: string }[]
+---@field getGrades fun(job: string): Bridge.Grade[]
+---@field setJob fun(id: string, job: string, grade?: integer, options?: { add: boolean }): boolean, Bridge.JobReason?
+---@field removeJob fun(id: string, job: string): boolean, Bridge.JobReason?
+---@field setDuty fun(src: integer, onDuty: boolean, job?: string): boolean
+---@field listEmployees fun(job: string): Bridge.Employee[]
+---@field setGrade fun(job: string, grade: integer, data: { name?: string, pay?: integer, boss?: boolean }): boolean, Bridge.JobReason?
+---@field removeGrade fun(job: string, grade: integer): boolean, Bridge.JobReason?
+---@field getMetadata fun(src: integer, key: string): any
+---@field setMetadata fun(src: integer, key: string, value: any): boolean
+---@field registerUsable fun(item: string, callback: fun(src: integer, item: table)): boolean
+---@field notify fun(src: integer, message: string, kind?: Bridge.NotifyKind, duration?: integer)
+---@field getPlayer fun(src: integer): table? the framework's own player object
+---@field core fun(): table? the framework's own core object
+
+---@class Bridge.FrameworkClient: Bridge.Module
+---@field isLoaded fun(): boolean
+---@field getIdentifier fun(): string?
+---@field getName fun(): string?
+---@field getJob fun(): Bridge.Job?
+---@field getGang fun(): Bridge.Gang?
+---@field getGroups fun(): table<string, integer>
+---@field hasGroup fun(group: Bridge.GroupRule, minGrade?: integer): boolean
+---@field getMoney fun(account: string): integer for display only
+---@field getMetadata fun(key: string): any
+---@field getPlayerData fun(): table? the framework's own player data
+---@field notify fun(message: string, kind?: Bridge.NotifyKind, duration?: integer)
