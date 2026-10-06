@@ -33,7 +33,11 @@ return {
         local framework = h.bridge.framework
 
         local function ace(src, name)
-            return type(name) == 'string' and name ~= '' and IsPlayerAceAllowed(tostring(src), name) == true
+            if type(name) ~= 'string' or name == '' then return false end
+            -- FXServer answers 1 for an allowed ace, not true: comparing with true alone
+            -- turned every player away.
+            local allowed = IsPlayerAceAllowed(tostring(src), name)
+            return allowed == true or allowed == 1
         end
 
         local function inJob(src, name, grade)

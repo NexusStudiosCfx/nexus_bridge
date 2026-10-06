@@ -5,7 +5,7 @@ lua54 'yes'
 name 'nexus_bridge'
 author 'Nexus Studios'
 description 'One bridge to frameworks, inventories, targets and the rest. Nexus Studios resources are built on it.'
-version '1.0.0'
+version '1.0.1'
 repository 'https://github.com/NexusStudiosCfx/nexus_bridge'
 license 'MIT'
 

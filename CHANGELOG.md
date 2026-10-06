@@ -2,6 +2,10 @@
 
 Versions follow semantic versioning. A resource says what it needs with `Bridge.require('>=1.0')`: a new function is a minor version, and nothing a resource calls changes its meaning or its answer within a major version.
 
+## 1.0.1
+
+- `Bridge.permission`: a rule with `ace:` (and the `ace` key of a table rule) let nobody through but the console. The server's answer for an allowed ace was compared too strictly. Fixed.
+
 ## 1.0.0
 
 The first release.
