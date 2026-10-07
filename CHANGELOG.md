@@ -2,6 +2,11 @@
 
 Versions follow semantic versioning. A resource says what it needs with `Bridge.require('>=1.0')`: a new function is a minor version, and nothing a resource calls changes its meaning or its answer within a major version.
 
+## 1.0.2
+
+- `Bridge.inventory.setMetadata` on ox_inventory raised an error for an empty slot or an inventory that no longer exists. It answers `false` now, as the other adapters do.
+- `Bridge.inventory.registerUsable` on ox_inventory says so in the console when an item it made usable has `consume` in its entry in `ox_inventory/data/items.lua`. ox_inventory keeps the use of such an item to itself, so the callback never runs: the usual reason for "nothing happens when I use the item". The items of a resource are named together in one line.
+
 ## 1.0.1
 
 - `Bridge.permission`: a rule with `ace:` (and the `ace` key of a table rule) let nobody through but the console. The server's answer for an allowed ace was compared too strictly. Fixed.

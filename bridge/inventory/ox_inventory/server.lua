@@ -64,6 +64,19 @@ function inventory.exists(name)
     return definition(name) ~= nil
 end
 
+--- ox_inventory hands a used item to the framework's usable items only when its entry has no
+--- `consume` (0 is a value too, and an entry with a `client` or `server` part of its own is
+--- given one). With it the use stays inside ox_inventory, which then calls nothing but an
+--- export the entry names.
+function inventory.keepsUse(name)
+    local item = definition(name)
+    return item ~= nil and item.consume ~= nil
+end
+
+inventory.keepsUseNote = 'their entries in ox_inventory/data/items.lua have "consume": ox_inventory keeps such a use to '
+    .. 'itself and calls only an export the entry names. If using one of them does nothing, delete "consume" (and any '
+    .. '"client" or "server" part) from its entry and restart the server.'
+
 function inventory.items(inv)
     local out = {}
     for _, held in pairs(ox:GetInventoryItems(inv) or {}) do
@@ -125,7 +138,10 @@ function inventory.removeSlot(inv, slot, name, count)
 end
 
 function inventory.setMetadata(inv, slot, metadata)
-    if type(ox:GetSlot(inv, slot)) ~= 'table' then return false end
+    -- GetSlot answers with no value at all for an empty slot or an inventory that is gone,
+    -- and type() raises on that when the call is its argument.
+    local held = ox:GetSlot(inv, slot)
+    if type(held) ~= 'table' then return false end
     ox:SetMetadata(inv, slot, metadata)
     return true
 end

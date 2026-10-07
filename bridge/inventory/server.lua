@@ -230,15 +230,35 @@ return {
             return missing
         end
 
+        -- Items made usable whose entry in the inventory keeps the use away from the callback:
+        -- named together in one line a moment later, not one line each.
+        local kept, noted, telling = {}, {}, false
+        local function tellKept()
+            telling = false
+            if #kept == 0 then return end
+            local names = table.concat(kept, ', ')
+            kept = {}
+            h.say(('%s made these items usable: %s. But %s'):format(h.resource, names, adapter.keepsUseNote))
+        end
+
         local register = adapter and (adapter.registerUsable or Bridge.framework.registerUsable) or a.registerUsable
         function inventory.registerUsable(name, callback)
             if type(name) ~= 'string' or type(callback) ~= 'function' then return false end
-            return register(name, function(src, x, y)
+            local ok = register(name, function(src, x, y)
                 local item = usedItem(x, y)
                 item.name = item.name or name
                 TriggerEvent('nexus_bridge:itemUsed', src, item.name, item.slot, item.metadata)
                 callback(src, item)
             end) == true
+            if ok and adapter and adapter.keepsUse and not noted[name] and adapter.keepsUse(name) then
+                noted[name] = true
+                kept[#kept + 1] = name
+                if not telling then
+                    telling = true
+                    SetTimeout(1000, tellKept)
+                end
+            end
+            return ok
         end
 
         function inventory.registerStash(id, options)
